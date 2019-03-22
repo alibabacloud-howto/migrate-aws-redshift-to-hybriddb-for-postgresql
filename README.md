@@ -1,11 +1,11 @@
-# Migrate from Amazon Redshift to HybridDB for PostgreSQL
+# Migrating from Amazon Redshift to HybridDB for PostgreSQL
 Describe overall process of migration from AWS Redshift to Alibaba Cloud HybridDB for PostgreSQL
 
 
-# 0. Introduction
+## Introduction
 In this document, it will describe how to migrate data from AWS Redshift to HybridDB for PostgreSQL.
 
-# 1. Data migration architecture and overall procedure
+## Data migration architecture and overall procedure
 
 In general, this migration process includes the following process:
 1. Alibaba Cloud related product selection and environment construction, mainly HybridDB for PostgreSQL and OSS;
@@ -17,21 +17,21 @@ In general, this migration process includes the following process:
 - **Batch import workflow:** Redshift -> S3 -> OSSImport on ECS -> OSS -> HybridDB for PostgreSQL
 - **Incremental import workflow:** Application -> S3 -> Lamda -> OSS -> (optional)MNS/MQ -> Function Compute ->HybridDB for PostgreSQL
 
-# 2. Preparation on AWS
+## Preparation on AWS
 
-## 2.1 Customer provides access to S3's credentials
+### Customer provides access to S3's credentials
 Contains the following information
 - AccessKeyID and AccessKey Secret.
 - Endpoint of S3, such as: **s3.ap-southeast-2.amazonaws.com**
 - Bucket name, such as: **alibaba-hybrid-export**
 
-## 2.2 Exported data format convention
+### Exported data format convention
 - Export data to a CSV format file
 - The size of the export file is up to 50M
 - the order of the column values in the file is the same as the column order of the table creation statement
 - The number of files is preferably the same as the number of segments in HybridDB for PostgreSQL or a multiple of the number of segments.
 
-## 2.3 Recommended Redshift UNLOAD command option
+### Recommended Redshift UNLOAD command option
 After many practices, we offer the Redshift UNLOAD option that is best for HybridDB for PostgreSQL imports. Here is an example:
 ```
 unload ('select * from test')
@@ -54,32 +54,32 @@ NULL AS 'NULL'
 MAXFILESIZE 50 mb
 ```
 
-## 2.4 Get the DDL statement of the object in the Redshift database
+### Get the DDL statement of the object in the Redshift database
 Export all DDL statements from AWS Redshift, including but not limited to schema, table, function, view.
 
-# 3 Preparation on Alibaba Cloud
+## Preparation on Alibaba Cloud
 
-## 3.1 Prepare Alibaba Cloud RAM sub-account
+### Prepare Alibaba Cloud RAM sub-account
 - RAM account ID
 - RAM account Password
 - RAM account Access Key ID
 - RAM account Access Key Secret
 
-## 3.2 Prepare OSS Bucket
+### Prepare OSS Bucket
 Create an Alibaba Cloud OSS Bucket in the same area as the AWS S3 Bucket, such as Region Sydney(ap-southeast-2)
 
 After the OSS bucket is created, the Internet Access Endpoint addresses and VPC Network Access from ECS (Internal Network) of the bucket are obtained from OSS Console.
 
 
-## 3.3 Prepare OSSImport
+### Prepare OSSImport
 - Create ECS in the same area of the bucket, with a network bandwidth of 100Mbps,here we use Windows x64 as the operating system for ECS.
 - Download and install the OSSImport tool on the created ECS
 The latest version of the OSSImport tool can be found and obtained at https://www.alibabacloud.com/help/doc-detail/56990.htm
 - After unzip the OSSImport package, you can see following folders and files (skip)
 
 
-# 4 Migrating data files from S3 to OSS using OSSImport
-## 4.1 Configuring OSSImport
+## Migrating data files from S3 to OSS using OSSImport
+### Configuring OSSImport
 1. In this practice, we use OSSImport in a stand-alone deployment mode.
 2. Edit **conf/local_job.cfg** file,here is an example, only the parameter configuration that must be modified in this practice is provided here.
 
@@ -98,33 +98,33 @@ The latest version of the OSSImport tool can be found and obtained at https://ww
 - destPrefix=
 - isSkipExistFile=true
 
-## 4.2 Starting the OSSImport Migration Task
+### Starting the OSSImport Migration Task
 In the OSSImport stand-alone deployment mode, you can start the migration task by executing **import.bat**.
 
-## 4.3 Monitoring task status
+### Monitoring task status
 During the data migration process, you can observe the output of the command execution window. On the other hand, you can observe the occupancy of the network bandwidth through the resource manager.
 
 In this example, since the ECS and the OSS Bucket are deployed in the same region, the network speed between data uploading from the ECS to the OSS Bucket (intranet Endpoint) is not limited. However, since data is downloaded from S3 to OSS via the Internet, the speed of ECS->OSS is virtually the same as the speed of S3->ECS, and the upload speed is limited by the download speed.
 
-## (optional) 4.4 Failed task retry
+### Failed task retry (optional)
 Subtasks may fail due to network or other reasons. Failure Retry only retry the failed Task and will not retry the successful Task. Execute **console.bat retry** in cmd.exe under Windows
 
-## (optional) 4.5 Check the files migrated to the OSS Bucket
+### Check the files migrated to the OSS Bucket (optional)
 Files can be checked through the OSS Console. We also recommend using the **OSS Brower** client tool to view and manipulate files in the bucket.
 
 OSS Brower can be found here: https://www.alibabacloud.com/help/doc-detail/61872.htm
 
-# (Optional) 5 Data scrubbing with csv files
+## Data scrubbing with csv files (optional)
 **Note** Here is only an example. It does not mean that you must complete this operation. You can perform certain data cleaning operations on the csv file according to your business needs.
 - Replace **"NULL"** in the csv files with blank
 - Replace **\\,** in the csv files with ,
 
 For this data scrubbing operation, we recommend doing it locally. Therefore, the data file that needs to be scrubbed is first downloaded to the ECS through the OSS Brower tool, and then the data scrubbing operation is performed; then, the data scrubbed files are uploaded to another newly created bucket to be distinguished from the original CSV files. When downloading the original csv files and uploading the cleaned files, we recommend that OSS Brower use OSS's intranet Endpoint for communication, so that intranet traffic charges will be reduced.
 
-# 6 DDL conversion from Redshift to HybridDB for PostgreSQL
+## DDL conversion from Redshift to HybridDB for PostgreSQL
 In this chapter, we will describe the necessary preparations before creating the HybridDB for PostgreSQL database object, mainly converting the DDL statements in the Redshift syntax format to the HybridDB for PostgreSQL syntax format. At the same time, we will briefly describe the conversion rules.
 
-## 6.1 Prepare CREATE SCHEMA
+### Prepare CREATE SCHEMA
 This is a sample that conforms to the PostgreSQL syntax format, then you can save it to **create schema.sql**
 
 ```
@@ -138,7 +138,7 @@ CREATE SCHEMA oss_external_table
   AUTHORIZATION xxxpoc;
 ```
 
-## 6.2 Prepare CREATE FUNCTION
+### Prepare CREATE FUNCTION
 Since Redshift provides some SQL functions, the corresponding functions are not provided in HybridDB for a while, so you need to customize these functions or rewrite them.
 
 - CONVERT_TIMEZONE(a,b,c) [CONVERT_TIMEZONE](https://docs.amazonaws.cn/en_us/redshift/latest/dg/CONVERT_TIMEZONE.html)
@@ -183,7 +183,7 @@ In your practice, please query the standard SQL function library of PostgreSQL. 
 ```
 
 
-## 6.3 Pepare CREATE TABLE
+### Prepare CREATE TABLE
 1. Change Compression Encoding [Redshift Compression Encodeing](https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html)
 HybridDB for PostgreSQL does not support following ENCODE encoding options in AWS Redshift :
 - BYTEDICT
@@ -288,10 +288,10 @@ SORTKEY
 );
 ```
 
-## 6.4 Prepare CREATE VIEW
+### Prepare CREATE VIEW
 Same as CREATE TABLE. If there is a SQL statement that needs to be modified, please modify it according to the standard that conforms to HybridDB for PostgreSQL syntax.
 
-## 6.5 Prepare CREATE EXTERNAL TABLE
+### Prepare CREATE EXTERNAL TABLE
 HybridDB for PostgreSQL supports parallel import from OSS or export to OSS through external tables (which is called the gpossext function).
 
 It can also compress OSS external table files in gzip format to reduce the storage space and the costs.
@@ -299,7 +299,7 @@ The gpossext function can read or write text/csv files or text/csv files in gzip
 
 You can find detail description from [Parallel import from OSS or export to OSS](https://www.alibabacloud.com/help/doc-detail/35457.htm)
 
-## 6.6 Prepare INSERT INTO
+### Prepare INSERT INTO
 Based on the above work, this step becomes simple and easy to understand. Simply insert the data from the OSS external table into the normal data table.
 
 The format is **INSERT INTO \<TABLE NAME\> SELECT * FROM \<OSS EXTERNAL TABLE NAME\>; **
@@ -309,18 +309,18 @@ Example:
 INSERT INTO schema1.table1 SELECT * FROM oss_external_table.table1;
 ```
 
-## 6.7 Prepare VACUUM SORT
+### Prepare VACUUM SORT
 This step is performed after importing OSS external table data into the HybridDB database. For VACCUM, refer to [VACUUM] (https://www.postgresql.org/docs/8.2/sql-vacuum.html)
 
-# 7 Prepare HybridDB for PostgreSQL instance
-## 7.1 Create and Config HybridDB for PostgreSQL instance
+## Prepare HybridDB for PostgreSQL instance
+### Create and Config HybridDB for PostgreSQL instance
 
 From Alibaba Cloud Document Center, you can find detail topics there:
 - [Create an instance](https://www.alibabacloud.com/help/doc-detail/50200.htm?spm=a2c63.p38356.b99.10.62a23c622heIqM)
 - [Set up a whitelist](https://www.alibabacloud.com/help/doc-detail/50207.htm?spm=a2c63.p38356.b99.13.44cc50b9EMx6kF)
 - [Set up an account](https://www.alibabacloud.com/help/doc-detail/50206.htm?spm=a2c63.p38356.b99.14.6cd26ca6znuAoi)
 
-## 7.2 Create Database Objects
+### Create Database Objects
 
 Please follow this document to connect instance [Connect to a HybridDB for PostgreSQL database](https://www.alibabacloud.com/help/doc-detail/35428.htm?spm=a2c63.p38356.b99.16.1f9429ebRNi9K2)
 
@@ -339,7 +339,7 @@ After completing the creation of the OSS external table, a table of HybridDB for
 SELECT * FROM oss_external_table.table1;
 ```
 
-# 8 Import OSS external table data into the data table
+## Import OSS external table data into the data table
 
 1. Execute insert.sql to complete the data import process.
 
