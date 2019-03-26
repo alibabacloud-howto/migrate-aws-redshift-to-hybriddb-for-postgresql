@@ -120,24 +120,23 @@ After the OSS bucket is created, the Internet Access Endpoint addresses and VPC 
 ## Migrating data files from S3 to OSS using OSSImport
 ### Configuring OSSImport
 1. In this practice, we use OSSImport in a stand-alone deployment mode.
-2. Edit **conf/local_job.cfg** file,here is an example, only the parameter configuration that must be modified in this
-   practice is provided here.
+2. Edit the `conf/local_job.cfg` file. In the following an example, only the parameters that must be modified in this
+   practice are displayed:
 
-> **Note:** The detailed configuration instructions for OSSImport can be found at
-> https://www.alibabacloud.com/help/doc-detail/56990.htm
+    - srcType=s3
+    - srcAccessKey="your AWS Access Key ID"
+    - srcSecretKey="your AWS Access Key Secret"
+    - srcDomain=s3.ap-southeast-2.amazonaws.com
+    - srcBucket=alibaba-hybrid-export
+    - destAccessKey="your Alibaba Cloud Access Key ID"
+    - destSecretKey="your Alibaba Cloud Access Key Secret"
+    - destDomain=http://oss-ap-southeast-2-internal.aliyuncs.com
+    - destBucket=alibaba-hybrid-export-1
+    - destPrefix=
+    - isSkipExistFile=true
 
-- srcType=s3
-- srcAccessKey="your AWS Access Key ID"
-- srcSecretKey="your AWS Access Key Secret"
-- srcDomain=s3.ap-southeast-2.amazonaws.com
-- srcBucket=alibaba-hybrid-export
-- srcBucket=
-- destAccessKey="your Alibaba Cloud Access Key ID"
-- destSecretKey="your Alibaba Cloud Access Key Secret"
-- destDomain=http://oss-ap-southeast-2-internal.aliyuncs.com
-- destBucket=alibaba-hybrid-export-1
-- destPrefix=
-- isSkipExistFile=true
+    > **Note:** The detailed configuration instructions for OSSImport can be found at
+    > https://www.alibabacloud.com/help/doc-detail/56990.htm
 
 ### Starting the OSSImport Migration Task
 In the OSSImport stand-alone deployment mode, you can start the migration task by executing `import.bat`.
