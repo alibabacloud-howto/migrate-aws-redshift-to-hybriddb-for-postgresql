@@ -1,5 +1,4 @@
 # Migrating from Amazon Redshift to HybridDB for PostgreSQL
-Describe overall process of migration from AWS Redshift to Alibaba Cloud HybridDB for PostgreSQL
 
 ## Summary
 1. [Introduction](#introduction)
@@ -35,19 +34,26 @@ Describe overall process of migration from AWS Redshift to Alibaba Cloud HybridD
 9. [Support](#support)
 
 ## Introduction
-In this document, it will describe how to migrate data from AWS Redshift to HybridDB for PostgreSQL.
+In this document, you will learn how to migrate data from [AWS Redshift](https://aws.amazon.com/redshift/) to
+[HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql).
 
 ## Data migration architecture and overall procedure
-In general, this migration process includes the following process:
-1. Alibaba Cloud related product selection and environment construction, mainly HybridDB for PostgreSQL and OSS;
-2. The customer exports the data to be migrated from a AWS Redshift database to S3 at a certain point in time;
-3. Configure and start the OSSImport to move the csv data file;
-4. Build various objects of the HybridDB for PostgreSQL database, including Schema, Tables, Views and Functions;
+This migration process generally includes the following steps:
+1. Alibaba Cloud related product selection and environment construction, mainly
+   [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql) and
+   [OSS](https://www.alibabacloud.com/product/oss);
+2. The customer exports the data to be migrated from a [AWS Redshift](https://aws.amazon.com/redshift/) database to
+   [S3](https://aws.amazon.com/s3) at a certain point in time;
+3. Configure and start [OSSImport](https://github.com/aliyun/ossimport) to move the csv data file;
+4. Build various objects for the [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql)
+   database, including [schemas](https://www.postgresql.org/docs/current/ddl-schemas.html),
+   [tables](https://www.postgresql.org/docs/current/ddl-basics.html),
+   [views](https://www.postgresql.org/docs/current/tutorial-views.html) and
+   [functions](https://www.postgresql.org/docs/current/sql-createfunction.html);
 5. Import data from the OSS external table into the data tables.
 
-- **Batch import workflow:** Redshift -> S3 -> OSSImport on ECS -> OSS -> HybridDB for PostgreSQL
-- **Incremental import workflow:** Application -> S3 -> Lamda -> OSS -> (optional)MNS/MQ -> Function Compute ->HybridDB
-  for PostgreSQL
+- **Batch import workflow:** Redshift → S3 → OSSImport on ECS → OSS → HybridDB for PostgreSQL
+- **Incremental import workflow:** Application → S3 → Lambda → OSS → MNS/MQ (optional) → Function Compute → HybridDB for PostgreSQL
 
 ## Preparation on AWS
 ### Customer provides access to S3's credentials
@@ -140,7 +146,7 @@ can observe the occupancy of the network bandwidth through the resource manager.
 
 In this example, since the ECS and the OSS Bucket are deployed in the same region, the network speed between data
 uploading from the ECS to the OSS Bucket (intranet Endpoint) is not limited. However, since data is downloaded from
-S3 to OSS via the Internet, the speed of ECS->OSS is virtually the same as the speed of S3->ECS, and the upload speed
+S3 to OSS via the Internet, the speed of ECS→OSS is virtually the same as the speed of S3→ECS, and the upload speed
 is limited by the download speed.
 
 ### Failed task retry (optional)
