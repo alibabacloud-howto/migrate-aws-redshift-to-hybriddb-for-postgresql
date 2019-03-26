@@ -168,19 +168,18 @@ Ossbrowser can be found here: https://www.alibabacloud.com/help/doc-detail/61872
 - Replace `\,` in the csv files with `,`.
 
 For this data scrubbing operation, we recommend doing it locally. Therefore, the data file that needs to be scrubbed
-is first downloaded to the ECS through the OSS Brower tool, and then the data scrubbing operation is performed; then,
+is first downloaded to the ECS through the Ossbrowser tool, and then the data scrubbing operation is performed; then,
 the data scrubbed files are uploaded to another newly created bucket to be distinguished from the original CSV files.
-When downloading the original csv files and uploading the cleaned files, we recommend that OSS Brower use OSS's
+When downloading the original CSV files and uploading the cleaned files, we recommend that Ossbrowser use OSS's
 intranet Endpoint for communication, so that intranet traffic charges will be reduced.
 
 ## DDL conversion from Redshift to HybridDB for PostgreSQL
 In this chapter, we will describe the necessary preparations before creating the HybridDB for PostgreSQL database
-object, mainly converting the DDL statements in the Redshift syntax format to the HybridDB for PostgreSQL syntax
+objects, mainly converting DDL statements in the Redshift syntax format into the HybridDB for PostgreSQL syntax
 format. At the same time, we will briefly describe the conversion rules.
 
 ### Prepare CREATE SCHEMA
-This is a sample that conforms to the PostgreSQL syntax format, then you can save it to `create schema.sql`
-
+This is a sample that conforms to the PostgreSQL syntax format, you can save it to `create schema.sql`:
 ```sql
 CREATE SCHEMA schema1
   AUTHORIZATION xxxpoc;
@@ -193,25 +192,26 @@ CREATE SCHEMA oss_external_table
 ```
 
 ### Prepare CREATE FUNCTION
-Since Redshift provides some SQL functions, the corresponding functions are not provided in HybridDB for a while, so
-you need to customize these functions or rewrite them.
+Since Redshift provides some SQL functions that are currently not supported by HybridDB, you need to replace these
+functions or rewrite them:
 
 - `CONVERT_TIMEZONE(a,b,c)` [CONVERT_TIMEZONE](https://docs.amazonaws.cn/en_us/redshift/latest/dg/CONVERT_TIMEZONE.html)
 
-    Replace with following code:
+    Replace with the following code:
     ```sql
     timezone(b, timezone(a,c))
     ```
     
 - `GETDATE()` [GETDATE](https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html)
 
-    Replace with following code:
+    Replace with the following code:
     ```sql
     current_timestamp(0):timestamp
     ```
     
-- Replace and optimize user defined function
+- Replace and optimize user defined functions.
 
+    For example, let's consider the following RedShift function:
     ```sql
     CREATE OR REPLACE FUNCTION public.f_jdate(dt timestamp without time zone)
     RETURNS character varying AS
@@ -224,7 +224,7 @@ you need to customize these functions or rewrite them.
     COMMIT;
     ```
     
-    Replace with following SQL statement, it will improve the performance:
+    We can replace a call to the function above by the following code snippet:
     ```sql
     to_char(a - interval '4 hour', 'yyyy-mm-dd')
     ```
