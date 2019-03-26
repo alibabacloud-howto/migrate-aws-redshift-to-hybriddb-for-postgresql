@@ -265,7 +265,7 @@ you need to customize these functions or rewrite them.
 
     - `DISTSTYLE EVEN`: Replace with `distributed randomly`
     - `DISTKEY`: Replace with `distributed by (colname1,...)`
-    - `ALL`: Not supported，removed
+    - `ALL`: Not supported, removed
 
 3. Change `SORT Key`, Reference: [Sort keys](https://docs.aws.amazon.com/redshift/latest/dg/t_Sorting_data.html)
 
@@ -278,7 +278,7 @@ you need to customize these functions or rewrite them.
 
 4. Example
 
-    Following `CREATE TABLE` statement is from Redshift：
+    Following `CREATE TABLE` statement is from Redshift:
     ```sql
     CREATE TABLE schema1.table1
     (
