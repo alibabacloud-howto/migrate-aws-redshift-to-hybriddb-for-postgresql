@@ -375,13 +375,13 @@ This step is performed after importing OSS external table data into the HybridDB
 ## Prepare HybridDB for PostgreSQL instance
 ### Create and Config HybridDB for PostgreSQL instance
 From Alibaba Cloud Document Center, you can find detail topics there:
-- [Create an instance](https://www.alibabacloud.com/help/doc-detail/50200.htm?spm=a2c63.p38356.b99.10.62a23c622heIqM)
-- [Set up a whitelist](https://www.alibabacloud.com/help/doc-detail/50207.htm?spm=a2c63.p38356.b99.13.44cc50b9EMx6kF)
-- [Set up an account](https://www.alibabacloud.com/help/doc-detail/50206.htm?spm=a2c63.p38356.b99.14.6cd26ca6znuAoi)
+- [Create an instance](https://www.alibabacloud.com/help/doc-detail/50200.htm)
+- [Set up a whitelist](https://www.alibabacloud.com/help/doc-detail/50207.htm)
+- [Set up an account](https://www.alibabacloud.com/help/doc-detail/50206.htm)
 
 ### Create Database Objects
 Please follow this document to connect instance 
-[Connect to a HybridDB for PostgreSQL database](https://www.alibabacloud.com/help/doc-detail/35428.htm?spm=a2c63.p38356.b99.16.1f9429ebRNi9K2)
+[Connect to a HybridDB for PostgreSQL database](https://www.alibabacloud.com/help/doc-detail/35428.htm)
 
 In my practice, I choose **psql** and **pgAdmin III 1.6.3**
 
