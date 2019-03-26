@@ -244,9 +244,9 @@ functions or rewrite them:
     - `RIGHT()` https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html
 
 ### Prepare CREATE TABLE
-1. Change Compression Encoding [Redshift Compression Encoding](https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html)
+1. Change [Redshift Compression Encoding](https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html)
 
-    HybridDB for PostgreSQL does not support following ENCODE encoding options in AWS Redshift:
+    HybridDB for PostgreSQL does not support the following `ENCODE` encoding options from AWS Redshift:
     - BYTEDICT
     - DELTA
     - DELTA32K
@@ -260,20 +260,19 @@ functions or rewrite them:
     - TEXT32K
     - ZSTD
 
-    ENCODE XXX should be removed and replaced with following option in CREATE TABLE statement:
+    `ENCODE XXX` should be removed and replaced with following option in `CREATE TABLE` statement:
     ```sql
     with (COMPRESSTYPE={ZLIB|QUICKLZ|RLE_TYPE|NONE})
     ```
-    Complete CREATE TABLE definition here:
-    https://www.alibabacloud.com/help/zh/faq-detail/59195.html
+    Complete `CREATE TABLE` definition: https://www.alibabacloud.com/help/doc-detail/59195.htm
 
-2. Change Distribution Style, Reference: [Distribution Styles](https://docs.aws.amazon.com/redshift/latest/dg/c_choosing_dist_sort.html)
+2. Change [Distribution Styles](https://docs.aws.amazon.com/redshift/latest/dg/c_choosing_dist_sort.html)
 
     - `DISTSTYLE EVEN`: Replace with `distributed randomly`
-    - `DISTKEY`: Replace with `distributed by (colname1,...)`
-    - `ALL`: Not supported, removed
+    - `DISTKEY`: Replace with `distributed by (colname1, ...)`
+    - `ALL`: Not supported, please remove it
 
-3. Change `SORT Key`, Reference: [Sort keys](https://docs.aws.amazon.com/redshift/latest/dg/t_Sorting_data.html)
+3. Change [Sort keys](https://docs.aws.amazon.com/redshift/latest/dg/t_Sorting_data.html)
 
     Replace with following options:
     ```sql
@@ -284,7 +283,7 @@ functions or rewrite them:
 
 4. Example
 
-    Following `CREATE TABLE` statement is from Redshift:
+    The following `CREATE TABLE` statement is from Redshift:
     ```sql
     CREATE TABLE schema1.table1
     (
@@ -299,9 +298,9 @@ functions or rewrite them:
     	filed1,
     	filed2
     );
-
     ```
-    After the conversion, the `CREATE TABLE` statement that conforms to the HybridDB for PostgreSQL syntax is as follows:
+    
+    After conversion nto the HybridDB for PostgreSQL syntax, the `CREATE TABLE` statement is as follows:
     ```sql
     CREATE TABLE schema1.table1
     (
@@ -333,7 +332,7 @@ functions or rewrite them:
     );
     ```
 
-    After the conversion, the `CREATE TABLE` statement that conforms to the HybridDB for PostgreSQL syntax is as follows:
+    After the conversion, the `CREATE TABLE` statement is as follows:
     ```sql
     CREATE TABLE schema2.table2
     (
@@ -351,7 +350,7 @@ functions or rewrite them:
 
 ### Prepare CREATE VIEW
 Same as `CREATE TABLE`. If there is a SQL statement that needs to be modified, please modify it according to the
-standard that conforms to HybridDB for PostgreSQL syntax.
+standard that conforms to the HybridDB for PostgreSQL syntax.
 
 ### Prepare CREATE EXTERNAL TABLE
 HybridDB for PostgreSQL supports parallel import from OSS or export to OSS through external tables (which is called
