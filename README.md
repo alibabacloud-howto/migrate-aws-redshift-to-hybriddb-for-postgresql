@@ -64,7 +64,7 @@ Contains the following information
 
 ### Recommended Redshift UNLOAD command option
 After many practices, we offer the Redshift UNLOAD option that is best for HybridDB for PostgreSQL imports. Here is an example:
-```redshift
+```sql
 unload ('select * from test')
 to 's3://xxx-poc/test_export_'
 access_key_id '<Your access key id>'
@@ -77,7 +77,7 @@ MAXFILESIZE 50 mb ;
 ```
 
 In this UNLOAD command example, the following options are recommended:
-```redshift
+```sql
 DELIMITER AS ','
 ADDQUOTES
 ESCAPE
@@ -173,7 +173,7 @@ format. At the same time, we will briefly describe the conversion rules.
 ### Prepare CREATE SCHEMA
 This is a sample that conforms to the PostgreSQL syntax format, then you can save it to `create schema.sql`
 
-```postgresql
+```sql
 CREATE SCHEMA schema1
   AUTHORIZATION xxxpoc;
 GRANT ALL ON SCHEMA schema1 TO xxxpoc;
@@ -191,20 +191,20 @@ you need to customize these functions or rewrite them.
 - `CONVERT_TIMEZONE(a,b,c)` [CONVERT_TIMEZONE](https://docs.amazonaws.cn/en_us/redshift/latest/dg/CONVERT_TIMEZONE.html)
 
     Replace with following code:
-    ```postgresql
+    ```sql
     timezone(b, timezone(a,c))
     ```
     
 - `GETDATE()` [GETDATE](https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html)
 
     Replace with following code:
-    ```postgresql
+    ```sql
     current_timestamp(0):timestamp
     ```
     
 - Replace and optimize user defined function
 
-    ```postgresql
+    ```sql
     CREATE OR REPLACE FUNCTION public.f_jdate(dt timestamp without time zone)
     RETURNS character varying AS
     '      from datetime import timedelta, datetime
@@ -217,7 +217,7 @@ you need to customize these functions or rewrite them.
     ```
     
     Replace with following SQL statement, it will improve the performance:
-    ```postgresql
+    ```sql
     to_char(a - interval '4 hour', 'yyyy-mm-dd')
     ```
 
@@ -255,7 +255,7 @@ you need to customize these functions or rewrite them.
     - ZSTD
 
     ENCODE XXX should be removed and replaced with following option in CREATE TABLE statement:
-    ```postgresql
+    ```sql
     with (COMPRESSTYPE={ZLIB|QUICKLZ|RLE_TYPE|NONE})
     ```
     Complete CREATE TABLE definition here:
@@ -270,16 +270,16 @@ you need to customize these functions or rewrite them.
 3. Change `SORT Key`, Reference: [Sort keys](https://docs.aws.amazon.com/redshift/latest/dg/t_Sorting_data.html)
 
     Replace with following options:
-    ```postgresql
+    ```sql
     with(APPENDONLY=true,ORIENTATION=column)
     sortkey (volume);
     ```
-    Remove `COMPOUND` or `INTERLEAVED` key words in `\[ COMPOUND | INTERLEAVED \] SORTKEY (column_name \[, ...\] ) \]`
+    Remove `COMPOUND` or `INTERLEAVED` key words in `[ COMPOUND | INTERLEAVED ] SORTKEY (column_name [, ...] ) ]`
 
 4. Example
 
     Following `CREATE TABLE` statement is from Redshift：
-    ```redshift
+    ```sql
     CREATE TABLE schema1.table1
     (
     	filed1 VARCHAR(100) ENCODE lzo,
@@ -296,7 +296,7 @@ you need to customize these functions or rewrite them.
 
     ```
     After the conversion, the `CREATE TABLE` statement that conforms to the HybridDB for PostgreSQL syntax is as follows:
-    ```postgresql
+    ```sql
     CREATE TABLE schema1.table1
     (
     	filed1 VARCHAR(100) ,
@@ -313,7 +313,7 @@ you need to customize these functions or rewrite them.
     ```
 
     Another example of `ENCODE` and `SORTKEY`, the original DDL is as follows:
-    ```redshift
+    ```sql
     CREATE TABLE schema2.table2
     (
     	filed1 VARCHAR(50) ENCODE lzo,
@@ -328,7 +328,7 @@ you need to customize these functions or rewrite them.
     ```
 
     After the conversion, the `CREATE TABLE` statement that conforms to the HybridDB for PostgreSQL syntax is as follows:
-    ```postgresql
+    ```sql
     CREATE TABLE schema2.table2
     (
     	filed1 VARCHAR(50),
@@ -360,10 +360,10 @@ You can find detail description from [Parallel import from OSS or export to OSS]
 Based on the above work, this step becomes simple and easy to understand. Simply insert the data from the OSS
 external table into the normal data table.
 
-The format is `INSERT INTO \<TABLE NAME\> SELECT * FROM \<OSS EXTERNAL TABLE NAME\>;`
+The format is `INSERT INTO <TABLE NAME> SELECT * FROM <OSS EXTERNAL TABLE NAME>;`
 
 Example:
-```postgresql
+```sql
 INSERT INTO schema1.table1 SELECT * FROM oss_external_table.table1;
 ```
 
@@ -394,7 +394,7 @@ Then you can perform DDL files completed in the Chapter 6.
 
 After completing the creation of the OSS external table, a table of HybridDB for PostgreSQL is associated with a set
 of CSV files, and the `SELECT` statement can be used to view the data as follows:
-```postgresql
+```sql
 SELECT * FROM oss_external_table.table1;
 ```
 
