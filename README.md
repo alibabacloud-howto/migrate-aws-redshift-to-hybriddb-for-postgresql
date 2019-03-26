@@ -39,12 +39,12 @@ In this document, you will learn how to migrate data from [AWS Redshift](https:/
 
 ## Data migration architecture and overall procedure
 This migration process generally includes the following steps:
-1. Alibaba Cloud related product selection and environment construction, mainly
+1. Select Alibaba Cloud related products and build the environment, with mainly
    [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql) and
    [OSS](https://www.alibabacloud.com/product/oss);
-2. The customer exports the data to be migrated from a [AWS Redshift](https://aws.amazon.com/redshift/) database to
+2. Exports the data to be migrated from a [AWS Redshift](https://aws.amazon.com/redshift/) database to
    [S3](https://aws.amazon.com/s3) at a certain point in time;
-3. Configure and start [OSSImport](https://github.com/aliyun/ossimport) to move the csv data file;
+3. Configure and start [OSSImport](https://github.com/aliyun/ossimport) to transfer the generated CSV data file;
 4. Build various objects for the [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql)
    database, including [schemas](https://www.postgresql.org/docs/current/ddl-schemas.html),
    [tables](https://www.postgresql.org/docs/current/ddl-basics.html),
