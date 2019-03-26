@@ -32,6 +32,7 @@ Describe overall process of migration from AWS Redshift to Alibaba Cloud HybridD
     1. [Create and Config HybridDB for PostgreSQL instance](#create-and-config-hybriddb-for-postgresql-instance)
     2. [Create Database Objects](#create-database-objects)
     3. [Import OSS external table data into the data table](#import-oss-external-table-data-into-the-data-table)
+9. [Support](#support)
 
 ## Introduction
 In this document, it will describe how to migrate data from AWS Redshift to HybridDB for PostgreSQL.
@@ -407,6 +408,5 @@ SELECT * FROM oss_external_table.table1;
 
 2. Execute `vaccum.sql` to make the table ordered again.
 
-
-
-
+## Support
+Don't hesitate to [contact us](mailto:projectdelivery@alibabacloud.com) if you have questions or remarks.
