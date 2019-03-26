@@ -142,30 +142,30 @@ After the OSS bucket is created, the Internet Access Endpoint addresses and VPC 
 In the OSSImport stand-alone deployment mode, you can start the migration task by executing `import.bat`.
 
 ### Monitoring task status
-During the data migration process, you can observe the output of the command execution window. On the other hand, you
-can observe the occupancy of the network bandwidth through the resource manager.
+During the data migration process, you can observe the output of the command execution window. In addition, you
+can observe the usage of the network bandwidth through the resource manager.
 
 In this example, since the ECS and the OSS Bucket are deployed in the same region, the network speed between data
 uploading from the ECS to the OSS Bucket (intranet Endpoint) is not limited. However, since data is downloaded from
-S3 to OSS via the Internet, the speed of ECS→OSS is virtually the same as the speed of S3→ECS, and the upload speed
+S3 to OSS via internet, the speed of ECS→OSS is virtually the same as the speed of S3→ECS, and the upload speed
 is limited by the download speed.
 
 ### Failed task retry (optional)
-Subtasks may fail due to network or other reasons. Failure Retry only retry the failed Task and will not retry the
-successful Task. Execute **console.bat retry** in cmd.exe under Windows
+Sub-tasks may fail due to network or other reasons. Failure Retry only retry the failed Task and will not retry the
+successful Task. Execute `console.bat retry` in a terminal in Windows.
 
 ### Check the files migrated to the OSS Bucket (optional)
-Files can be checked through the OSS Console. We also recommend using the **OSS Brower** client tool to view and
+Files can be checked through the OSS Console. We also recommend using the **Ossbrowser** client tool to view and
 manipulate files in the bucket.
 
-OSS Browser can be found here: https://www.alibabacloud.com/help/doc-detail/61872.htm
+Ossbrowser can be found here: https://www.alibabacloud.com/help/doc-detail/61872.htm
 
 ## Data scrubbing with csv files (optional)
-> **Note:** Here is only an example. It does not mean that you must complete this operation. You can perform certain
-> data cleaning operations on the csv file according to your business needs.
+> **Note:** This is only an example. It does not mean that you must complete this operation. You can perform certain
+> data cleaning operations on the CSV file according to your business needs.
 
-- Replace **"NULL"** in the csv files with blank
-- Replace **\\,** in the csv files with ,
+- Replace `NULL` in the CSV files with a blank character.
+- Replace `\,` in the csv files with ,
 
 For this data scrubbing operation, we recommend doing it locally. Therefore, the data file that needs to be scrubbed
 is first downloaded to the ECS through the OSS Brower tool, and then the data scrubbing operation is performed; then,
