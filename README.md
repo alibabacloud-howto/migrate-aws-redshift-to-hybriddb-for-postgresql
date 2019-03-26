@@ -356,13 +356,13 @@ standard that conforms to the HybridDB for PostgreSQL syntax.
 HybridDB for PostgreSQL supports parallel import from OSS or export to OSS through external tables (which is called
 the `gpossext` function).
 
-It can also compress OSS external table files in gzip format to reduce the storage space and the costs.
-The `gpossext` function can read or write text/csv files or text/csv files in gzip format.
+It can also compress OSS external table files in gzip format to reduce the storage space and cost.
+The `gpossext` function can read or write text/csv files, gzipped or not.
 
-You can find detail description from [Parallel import from OSS or export to OSS](https://www.alibabacloud.com/help/doc-detail/35457.htm)
+You can find detail description from [this document](https://www.alibabacloud.com/help/doc-detail/35457.htm)
 
 ### Prepare INSERT INTO
-Based on the above work, this step becomes simple and easy to understand. Simply insert the data from the OSS
+Based on the work above, this step becomes simple and easy to understand. Simply insert the data from the OSS
 external table into the normal data table.
 
 The format is `INSERT INTO <TABLE NAME> SELECT * FROM <OSS EXTERNAL TABLE NAME>;`
@@ -373,12 +373,12 @@ INSERT INTO schema1.table1 SELECT * FROM oss_external_table.table1;
 ```
 
 ### Prepare VACUUM SORT
-This step is performed after importing OSS external table data into the HybridDB database. For VACCUM, refer to
-[VACUUM](https://www.postgresql.org/docs/8.2/sql-vacuum.html)
+This step is performed after importing OSS external table data into the HybridDB database. For VACUUM, refer to
+[this document](https://www.postgresql.org/docs/8.2/sql-vacuum.html)
 
 ## Prepare HybridDB for PostgreSQL instance
 ### Create and Config HybridDB for PostgreSQL instance
-From Alibaba Cloud Document Center, you can find detail topics there:
+You can find the following topics on the Alibaba Cloud Document Center:
 - [Create an instance](https://www.alibabacloud.com/help/doc-detail/50200.htm)
 - [Set up a whitelist](https://www.alibabacloud.com/help/doc-detail/50207.htm)
 - [Set up an account](https://www.alibabacloud.com/help/doc-detail/50206.htm)
