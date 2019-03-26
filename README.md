@@ -135,8 +135,8 @@ After the OSS bucket is created, the Internet Access Endpoint addresses and VPC 
     - destPrefix=
     - isSkipExistFile=true
 
-    > **Note:** The detailed configuration instructions for OSSImport can be found at
-    > https://www.alibabacloud.com/help/doc-detail/56990.htm
+> **Note:** The detailed configuration instructions for OSSImport can be found at
+> https://www.alibabacloud.com/help/doc-detail/56990.htm
 
 ### Starting the OSSImport Migration Task
 In the OSSImport stand-alone deployment mode, you can start the migration task by executing `import.bat`.
