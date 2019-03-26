@@ -111,11 +111,11 @@ After the OSS bucket is created, the Internet Access Endpoint addresses and VPC 
 (Internal Network) of the bucket are obtained from the [OSS Console](https://oss.console.aliyun.com).
 
 ### Prepare OSSImport
-- Create ECS in the same area of the bucket, with a network bandwidth of 100Mbps, here we use Windows x64 as the
-  operating system for ECS.
+- Create an ECS instance in the same region as the bucket, with a network bandwidth of 100Mbps, here we use Windows x64
+  as the operating system.
 - Download and install the OSSImport tool on the created ECS. The latest version of the OSSImport tool can be found and
   obtained at https://www.alibabacloud.com/help/doc-detail/56990.htm
-- After unzip the OSSImport package, you can see following folders and files (skip)
+- Unzip the OSSImport package.
 
 ## Migrating data files from S3 to OSS using OSSImport
 ### Configuring OSSImport
