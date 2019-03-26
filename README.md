@@ -165,7 +165,7 @@ Ossbrowser can be found here: https://www.alibabacloud.com/help/doc-detail/61872
 > data cleaning operations on the CSV file according to your business needs.
 
 - Replace `NULL` in the CSV files with a blank character.
-- Replace `\,` in the csv files with ,
+- Replace `\,` in the csv files with `,`.
 
 For this data scrubbing operation, we recommend doing it locally. Therefore, the data file that needs to be scrubbed
 is first downloaded to the ECS through the OSS Brower tool, and then the data scrubbing operation is performed; then,
