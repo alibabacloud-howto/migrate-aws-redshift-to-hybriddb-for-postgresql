@@ -384,13 +384,11 @@ You can find the following topics on the Alibaba Cloud Document Center:
 - [Set up an account](https://www.alibabacloud.com/help/doc-detail/50206.htm)
 
 ### Create Database Objects
-Please follow this document to connect instance 
-[Connect to a HybridDB for PostgreSQL database](https://www.alibabacloud.com/help/doc-detail/35428.htm)
+Please follow [this document](https://www.alibabacloud.com/help/doc-detail/35428.htm) to connect to the instance.
 
-In my practice, I choose **psql** and **pgAdmin III 1.6.3**
+In this document, **psql** and **pgAdmin III 1.6.3** were chosen.
 
-Then you can perform DDL files completed in the Chapter 6.
-
+Then the DDL files from [the previous section](#ddl-conversion-from-redshift-to-hybriddb-for-postgresql) can be executed:
 1. create schema
 2. create functions
 3. create tables
