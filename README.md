@@ -42,7 +42,7 @@ This migration process generally includes the following steps:
 1. Select Alibaba Cloud related products and build the environment, with mainly
    [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql) and
    [OSS](https://www.alibabacloud.com/product/oss);
-2. Exports the data to be migrated from a [AWS Redshift](https://aws.amazon.com/redshift/) database to
+2. Export the data to be migrated from a [AWS Redshift](https://aws.amazon.com/redshift/) database to
    [S3](https://aws.amazon.com/s3) at a certain point in time;
 3. Configure and start [OSSImport](https://github.com/aliyun/ossimport) to transfer the generated CSV data file;
 4. Build various objects for the [HybridDB for PostgreSQL](https://www.alibabacloud.com/product/hybriddb-postgresql)
@@ -63,14 +63,15 @@ Contains the following information
 - Bucket name, such as: **alibaba-hybrid-export**
 
 ### Exported data format convention
-- Export data to a CSV format file
-- The size of the export file is up to 50M
-- the order of the column values in the file is the same as the column order of the table creation statement
+- Export data to a CSV format file.
+- The size of the export file is up to 50M.
+- The order of the column values in the file is the same as the column order of the table creation statement.
 - The number of files is preferably the same as the number of segments in HybridDB for PostgreSQL or a multiple of
   the number of segments.
 
 ### Recommended Redshift UNLOAD command option
-After many practices, we offer the Redshift UNLOAD option that is best for HybridDB for PostgreSQL imports. Here is an example:
+After many practices, we believe that the Redshift UNLOAD option is best for HybridDB for PostgreSQL imports. Here is
+an example:
 ```sql
 unload ('select * from test')
 to 's3://xxx-poc/test_export_'
@@ -93,7 +94,7 @@ MAXFILESIZE 50 mb
 ```
 
 ### Get the DDL statement of the object in the Redshift database
-Export all DDL statements from AWS Redshift, including but not limited to schema, table, function, view.
+Export all DDL statements from AWS Redshift, including but not limited to schema, table, function and view.
 
 ## Preparation on Alibaba Cloud
 ### Prepare Alibaba Cloud RAM sub-account
@@ -103,10 +104,11 @@ Export all DDL statements from AWS Redshift, including but not limited to schema
 - RAM account Access Key Secret
 
 ### Prepare OSS Bucket
-Create an Alibaba Cloud OSS Bucket in the same area as the AWS S3 Bucket, such as Region Sydney(ap-southeast-2)
+Create an Alibaba Cloud OSS Bucket in the same [region](https://www.alibabacloud.com/help/doc-detail/40654.htm)
+as the AWS S3 Bucket, such as Sydney (ap-southeast-2).
 
 After the OSS bucket is created, the Internet Access Endpoint addresses and VPC Network Access from ECS
-(Internal Network) of the bucket are obtained from OSS Console.
+(Internal Network) of the bucket are obtained from the [OSS Console](https://oss.console.aliyun.com).
 
 ### Prepare OSSImport
 - Create ECS in the same area of the bucket, with a network bandwidth of 100Mbps, here we use Windows x64 as the
