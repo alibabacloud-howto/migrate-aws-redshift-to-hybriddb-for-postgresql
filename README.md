@@ -404,9 +404,10 @@ SELECT * FROM oss_external_table.table1;
 ## Import OSS external table data into the data table
 1. Execute `insert.sql` to complete the data import process.
 
-    The csv file saved in the OSS Bucket will be imported into the corresponding table in the HybridDB for PostgreSQL database.
+    The CSV file saved in the OSS Bucket will be imported into the corresponding table in the HybridDB for PostgreSQL
+    database.
 
-    After importing completed, you can use some familiar `SELECT` statements to verify the data.
+    After import is completed, familiar `SELECT` statements can be used to verify the data.
 
 2. Execute `vaccum.sql` to make the table ordered again.
 
