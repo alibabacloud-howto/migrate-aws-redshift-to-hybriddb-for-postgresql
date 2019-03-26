@@ -1,6 +1,37 @@
 # Migrating from Amazon Redshift to HybridDB for PostgreSQL
 Describe overall process of migration from AWS Redshift to Alibaba Cloud HybridDB for PostgreSQL
 
+## Summary
+1. [Introduction](#introduction)
+2. [Data migration architecture and overall procedure](#data-migration-architecture-and-overall-procedure)
+3. [Preparation on AWS](#preparation-on-aws)
+    1. [Customer provides access to S3's credentials](#customer-provides-access-to-s3s-credentials)
+    2. [Exported data format convention](#exported-data-format-convention)
+    3. [Recommended Redshift UNLOAD command option](#recommended-redshift-unload-command-option)
+    4. [Get the DDL statement of the object in the Redshift database](#get-the-ddl-statement-of-the-object-in-the-redshift-database)
+4. [Preparation on Alibaba Cloud](#preparation-on-alibaba-cloud)
+    1. [Prepare Alibaba Cloud RAM sub-account](#prepare-alibaba-cloud-ram-sub-account)
+    2. [Prepare OSS Bucket](#prepare-oss-bucket)
+    3. [Prepare OSSImport](#prepare-ossimport)
+5. [Migrating data files from S3 to OSS using OSSImport](#migrating-data-files-from-s3-to-oss-using-ossimport)
+    1. [Configuring OSSImport](#configuring-ossimport)
+    2. [Starting the OSSImport Migration Task](#starting-the-ossimport-migration-task)
+    3. [Monitoring task status](#monitoring-task-status)
+    4. [Failed task retry (optional)](#failed-task-retry-optional)
+    5. [Check the files migrated to the OSS Bucket (optional)](#check-the-files-migrated-to-the-oss-bucket-optional)
+6. [Data scrubbing with csv files (optional)](#data-scrubbing-with-csv-files-optional)
+7. [DDL conversion from Redshift to HybridDB for PostgreSQL](#ddl-conversion-from-redshift-to-hybriddb-for-postgresql)
+    1. [Prepare CREATE SCHEMA](#prepare-create-schema)
+    2. [Prepare CREATE FUNCTION](#prepare-create-function)
+    3. [Prepare CREATE TABLE](#prepare-create-table)
+    4. [Prepare CREATE VIEW](#prepare-create-view)
+    5. [Prepare CREATE EXTERNAL TABLE](#prepare-create-external-table)
+    6. [Prepare INSERT INTO](#prepare-insert-into)
+    7. [Prepare VACUUM SORT](#prepare-vacuum-sort)
+8. [Prepare HybridDB for PostgreSQL instance](#prepare-hybriddb-for-postgresql-instance)
+    1. [Create and Config HybridDB for PostgreSQL instance](#create-and-config-hybriddb-for-postgresql-instance)
+    2. [Create Database Objects](#create-database-objects)
+    3. [Import OSS external table data into the data table](#import-oss-external-table-data-into-the-data-table)
 
 ## Introduction
 In this document, it will describe how to migrate data from AWS Redshift to HybridDB for PostgreSQL.
