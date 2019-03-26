@@ -231,19 +231,17 @@ functions or rewrite them:
 
 - Other Redshift standard SQL Functions
 
-    In your practice, please query the standard SQL function library of PostgreSQL. If you do not provide SQL
-    functions compatible with Redshift, you need to consider implementing it yourself, or find best practices
-    from the Internet. Here are a few commonly used functions for your reference.
+    If possible, it is better to use the standard SQL function library of PostgreSQL. When it is not possible,
+    you need to consider implementing it yourself. Here are a few commonly used functions for your reference:
 
     [Functions and Operators in PostgreSQL8.2](https://www.postgresql.org/docs/8.2/functions.html)
-    ```
-    - ISNULL() https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql?view=sql-server-2017
-    - DATEADD() https://docs.aws.amazon.com/redshift/latest/dg/r_DATEADD_function.html
-    - DATEDIFF() https://docs.aws.amazon.com/redshift/latest/dg/r_DATEDIFF_function.html
-    - REGEXP_COUNT() https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_COUNT.html
-    - LEFT() https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html
-    - RIGHT() https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html
-    ```
+
+    - `ISNULL()` https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql?view=sql-server-2017
+    - `DATEADD()` https://docs.aws.amazon.com/redshift/latest/dg/r_DATEADD_function.html
+    - `DATEDIFF()` https://docs.aws.amazon.com/redshift/latest/dg/r_DATEDIFF_function.html
+    - `REGEXP_COUNT()` https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_COUNT.html
+    - `LEFT()` https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html
+    - `RIGHT()` https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html
 
 ### Prepare CREATE TABLE
 1. Change Compression Encoding [Redshift Compression Encoding](https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html)
